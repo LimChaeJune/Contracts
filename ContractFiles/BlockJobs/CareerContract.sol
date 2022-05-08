@@ -5,7 +5,9 @@ pragma solidity ^0.8.7;
 import "./BlockJobsCoin.sol";
 
 contract CareerContract {
-    BlockJobsCoin public BlockJobCoinAddress;
+    BlockJobsCoin public BlockJobCoinAddress;    
+    event Bought(uint256 amount);
+    event Sold(uint256 amount);
 
     constructor(address payable _tokenContractAddress) payable{
         BlockJobCoinAddress = BlockJobsCoin(_tokenContractAddress);
@@ -49,6 +51,24 @@ contract CareerContract {
     function BalanceOf(address _from) public view returns(uint256){
         return BlockJobCoinAddress.balanceOf(_from);
     }
+
+    function Buy() payable public {
+        uint256 amountTobuy = msg.value;
+        uint256 dexBalance = BlockJobCoinAddress.balanceOf(address(this));
+        require(amountTobuy > 0, "You need to send some ether");
+        require(amountTobuy <= dexBalance, "Not enough tokens in the reserve");
+        BlockJobCoinAddress.transferFrom(BlockJobCoinAddress._adminAddress() , msg.sender, amountTobuy * (10 ** 13));
+        emit Bought(amountTobuy);
+    }
+
+    function sell(uint256 amount) payable public{
+        require(amount > 0, "You need to sell at least some tokens");
+        uint256 allowance = BlockJobCoinAddress.allowance(msg.sender, address(this));
+        require(allowance >= amount, "Check the token allowance");
+        BlockJobCoinAddress.transferFrom(msg.sender, address(this), amount);
+        BlockJobCoinAddress.transferFrom(msg.sender, BlockJobCoinAddress._adminAddress() ,amount);
+        emit Sold(amount);
+    }    
 
     // 커리어 등록
    function createCareer (string[] memory _role, string memory _description, address _company, uint _stDt, uint _fnsDt, address _admin, uint _amount) public payable{

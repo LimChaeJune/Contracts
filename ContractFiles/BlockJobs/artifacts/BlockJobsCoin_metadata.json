@@ -55,6 +55,32 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Bought",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Sold",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "from",
@@ -75,6 +101,13 @@
 				],
 				"name": "Transfer",
 				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "Buy",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -103,6 +136,32 @@
 					}
 				],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "GetEther",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "_adminAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -210,6 +269,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getbalancetest",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -235,6 +307,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "invest",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "name",
 				"outputs": [
 					{
@@ -244,6 +323,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "sell",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -373,7 +465,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ContractFiles/BlockJobs/BlockJobsCoin.sol": "BlockJobsCoin"
+			"BlockJobs/BlockJobsCoin.sol": "BlockJobsCoin"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -388,19 +480,19 @@
 	},
 	"sources": {
 		"@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-			"keccak256": "0xdadd41acb749920eccf40aeaa8d291adf9751399a7343561bad13e7a8d99be0b",
+			"keccak256": "0xe0c8b625a79bac0fe80f17cfb521e072805cc9cef1c96a5caf45b264e74812fa",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://12af4ac016f9fdf3be5d15824f4292272aa11f6b2e0192a0f7320f5ad49bbbf0",
-				"dweb:/ipfs/QmRXMpdqCgA3TYuYxBodqs5p9jGbnMW6xa2gvjppvq4TWk"
+				"bzz-raw://12fd1efc9ad061ef675bd50fb0c8e3c6f2952a09f8df0e3c688b8d81b8918838",
+				"dweb:/ipfs/QmawN6PjTwy91pU7ANjCSgbsLc8TDA6hwu9GsFFaNSuhb5"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-			"keccak256": "0xbbc8ac883ac3c0078ce5ad3e288fbb3ffcc8a30c3a98c0fda0114d64fc44fca2",
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://87a7a5d2f6f63f84598af02b8c50ca2df2631cb8ba2453e8d95fcb17e4be9824",
-				"dweb:/ipfs/QmR76hqtAcRqoFj33tmNjcWTLrgNsAaakYwnKZ8zoJtKei"
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
@@ -419,12 +511,12 @@
 				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
 			]
 		},
-		"ContractFiles/BlockJobs/BlockJobsCoin.sol": {
-			"keccak256": "0xbb6861fe167039c7f2a86ad6bef3da3098b196cae1a0997f64efc88d4a1647ce",
+		"BlockJobs/BlockJobsCoin.sol": {
+			"keccak256": "0x53805d7f3afdc5d3b15e3f74289c0cb45a58627e7e6498ceca64ca481d145b78",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://2fea49651dfcc33bf7c4e9f834eb68f7f4f70304c19d6468cacf0a41f9cf4a0e",
-				"dweb:/ipfs/QmQ1gNV19FN7enNqHd96S9qd6oYuyUTGMVg9g9AfMaiLq6"
+				"bzz-raw://0fbc7e083de9d05fc9729c262a04c9b1db1c52b0f6df42b6653bc24581a2e369",
+				"dweb:/ipfs/QmfGpxxfNyNzKoohHNfjADjgpCZezf76GT5Zs18ZTA8V9b"
 			]
 		}
 	},
