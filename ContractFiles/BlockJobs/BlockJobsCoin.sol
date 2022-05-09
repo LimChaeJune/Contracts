@@ -21,34 +21,4 @@ contract BlockJobsCoin is ERC20 {
         _approve(_owner, spender, amount);
         return true;
     }
-
-    function invest() external payable {
-
-    }
-
-    function GetEther() external view returns (uint) {
-        return address(this).balance;
-    }
-
-    function getbalancetest() external view returns (uint) {
-        return balanceOf(_adminAddress);
-    }
-
-    function Buy() payable public{
-        uint256 amountTobuy = msg.value;
-        uint256 dexBalance = balanceOf(_adminAddress);
-        require(amountTobuy > 0, "You need to send some ether");
-        require(amountTobuy <= dexBalance, "Not enough tokens in the reserve");
-        transferFrom(_adminAddress, msg.sender, amountTobuy);
-        emit Bought(amountTobuy);
-    }
-
-    function sell(uint256 amount) payable public{
-        require(amount > 0, "You need to sell at least some tokens");
-        uint256 allowance = allowance(msg.sender, address(this));
-        require(allowance >= amount, "Check the token allowance");
-        transferFrom(msg.sender, address(this), amount);
-        payable(msg.sender).transfer(amount);
-        emit Sold(amount);
-    }
 }

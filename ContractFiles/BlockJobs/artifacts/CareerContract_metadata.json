@@ -249,16 +249,37 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "GetEther",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "_owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
 						"name": "_careerId",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_admin",
-						"type": "address"
 					},
 					{
 						"internalType": "uint256",
@@ -315,11 +336,6 @@
 						"internalType": "uint256",
 						"name": "_fnsDt",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_admin",
-						"type": "address"
 					},
 					{
 						"internalType": "uint256",
@@ -595,19 +611,19 @@
 			]
 		},
 		"BlockJobs/BlockJobsCoin.sol": {
-			"keccak256": "0x941a43c67998bf74c9c98bf955ca206f77587580aba67c35c62869ac6a7da025",
+			"keccak256": "0xbb437874434766d7fcefeb13a9a3dbfba2e41a3975d2094b6c8d0962fe7821d6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://2f97b1374947007df32740c2dd7313c4f9a9cf08df74feceba447389e5923150",
-				"dweb:/ipfs/QmdMV9wmARqXhHwfq3g356SCRfb1f7T7tsfwyvuXPGdqTn"
+				"bzz-raw://a504b6ee2605d14812d5ed4f502d9103e2a71b08c7ea609aec62bfb94fc3af51",
+				"dweb:/ipfs/Qme4A8YYtGMvH9Gr4s9VF9jLCkjhi9YfxELSrac116sTGc"
 			]
 		},
 		"BlockJobs/CareerContract.sol": {
-			"keccak256": "0x34f84b74067c2ee2ce80f173211da0e13151a5575b6fbf5c9597a8ac08c5c5bc",
+			"keccak256": "0x81b293cc371ff24a58d42f492bf5f9c6a938fc6e2c27a47231ce6f97a207feed",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5b3edfc6b04cd8143621d6f55a2fba1a518339f94a7e5c7f0cd8ebd963170798",
-				"dweb:/ipfs/Qmd4HNr2aDdGuHeSaLG7NDdbSrRzms14s8y12fw8Z4xABS"
+				"bzz-raw://ebbf68d9ca83e444708322264c3ab7b7b7f13def0df5af20c941870c4031ce90",
+				"dweb:/ipfs/QmVoY3xNVF9B56oiuA9tJCn9YJBsYXzpd7kByxY5EHwq14"
 			]
 		}
 	},

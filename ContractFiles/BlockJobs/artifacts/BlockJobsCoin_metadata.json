@@ -103,13 +103,6 @@
 				"type": "event"
 			},
 			{
-				"inputs": [],
-				"name": "Buy",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -136,19 +129,6 @@
 					}
 				],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "GetEther",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -269,19 +249,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getbalancetest",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -307,13 +274,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "invest",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "name",
 				"outputs": [
 					{
@@ -323,19 +283,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "sell",
-				"outputs": [],
-				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -512,11 +459,11 @@
 			]
 		},
 		"BlockJobs/BlockJobsCoin.sol": {
-			"keccak256": "0x53805d7f3afdc5d3b15e3f74289c0cb45a58627e7e6498ceca64ca481d145b78",
+			"keccak256": "0xbb437874434766d7fcefeb13a9a3dbfba2e41a3975d2094b6c8d0962fe7821d6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0fbc7e083de9d05fc9729c262a04c9b1db1c52b0f6df42b6653bc24581a2e369",
-				"dweb:/ipfs/QmfGpxxfNyNzKoohHNfjADjgpCZezf76GT5Zs18ZTA8V9b"
+				"bzz-raw://a504b6ee2605d14812d5ed4f502d9103e2a71b08c7ea609aec62bfb94fc3af51",
+				"dweb:/ipfs/Qme4A8YYtGMvH9Gr4s9VF9jLCkjhi9YfxELSrac116sTGc"
 			]
 		}
 	},
