@@ -59,3 +59,5 @@ Thumbs.db
 !.gitignore
 !.nvmrc
 !.phpcs.xml.dist
+
+ContractFiles/blog/artifacts/build-info/
