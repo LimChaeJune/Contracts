@@ -40,12 +40,12 @@ contract CareerContract {
     // 회원관리
     // Coin Approve;
     function approveUser(uint256 _amount) public payable {
-        BlockJobCoinAddress.CoinApprove(msg.sender, address(this), _amount);
+        BlockJobCoinAddress.CoinApprove(msg.sender, address(this), _amount * (10 ** BlockJobCoinAddress.decimals()));
     }
 
     // 결제 및 헤드헌팅 등에 사용... 따로 불변 데이터 저장이 필요 없어보여서 클라이언트에서 분리 후 공용 사용
-    function transferFrom(address _to ,uint _amount) public payable{
-        BlockJobCoinAddress.transferFrom(msg.sender, _to, _amount);
+    function transferFrom(address _to ,uint256 _amount) public payable{
+        BlockJobCoinAddress.transferFrom(msg.sender, _to, _amount * (10 ** BlockJobCoinAddress.decimals()));
 
         emit transferFrom_event(msg.sender, _to, _amount);
     }
@@ -56,7 +56,7 @@ contract CareerContract {
     }
 
     // 현재 컨트랙트의 이더소유 값 조회
-    function GetEther() external view returns (uint) {
+    function GetEther() external view returns (uint256) {
         return address(this).balance;
     }
 
@@ -83,7 +83,7 @@ contract CareerContract {
     }    
 
     // 커리어 등록
-   function createCareer (string[] memory _role, string memory _description, address _company, uint _stDt, uint _fnsDt, uint _amount) public payable{
+   function createCareer (string[] memory _role, string memory _description, address _company, uint _stDt, uint _fnsDt, uint256 _amount) public payable{
      // @Exception
        // require(bytes(_title).length > 9, "Title is too short"); // KOR = Letter/3bytes && ENG = Letter/1
        require(bytes(_description).length > 9, "Description is too short");
@@ -102,7 +102,7 @@ contract CareerContract {
        CareerByCompany_mapping[_company].push(CareerTotalSupply);
 
        // Transfer 관리자에게 먼저 지급;
-       BlockJobCoinAddress.transferFrom(msg.sender, _owner, _amount);
+       BlockJobCoinAddress.transferFrom(msg.sender, _owner, _amount * (10 ** BlockJobCoinAddress.decimals()));
 
        // emit Event
        emit createCareer_event(msg.sender, CareerTotalSupply);
@@ -125,11 +125,11 @@ contract CareerContract {
 
      // 경력 등록 거절 시에 근로자에게 30% 되돌려 줌
      if (_status == 2){
-       BlockJobCoinAddress.transferFrom(_owner, Career_mapping[_careerId].worker, _amount * 3/10);
+       BlockJobCoinAddress.transferFrom(_owner, Career_mapping[_careerId].worker, (_amount * (10 ** BlockJobCoinAddress.decimals())) * 3/10);
      }
      // 승인 시에 근로자가 등록할 때 admin에게 지불한 값 80%는 기업에게 배분 (가스비가...?)
      else if(_status == 1){
-       BlockJobCoinAddress.transferFrom(_owner, msg.sender, _amount * 8/10);
+       BlockJobCoinAddress.transferFrom(_owner, msg.sender, (_amount * (10 ** BlockJobCoinAddress.decimals())) * 8/10);
      }
 
      // emit Event

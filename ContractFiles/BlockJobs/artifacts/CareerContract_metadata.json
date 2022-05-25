@@ -619,11 +619,11 @@
 			]
 		},
 		"BlockJobs/CareerContract.sol": {
-			"keccak256": "0x81b293cc371ff24a58d42f492bf5f9c6a938fc6e2c27a47231ce6f97a207feed",
+			"keccak256": "0x6e0fd8566c47ec5cf9cea7c0161abd79a27e154e92e83f9b916231dffce18d84",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ebbf68d9ca83e444708322264c3ab7b7b7f13def0df5af20c941870c4031ce90",
-				"dweb:/ipfs/QmVoY3xNVF9B56oiuA9tJCn9YJBsYXzpd7kByxY5EHwq14"
+				"bzz-raw://374010f8262b6dc1e6a5095699ca0c317ed53a4ffeffb8b8afe6ca4e9aa15c91",
+				"dweb:/ipfs/QmYV52mvvxNS8ELDjSoUNLqfout1qihAoCFs2enEYk3smJ"
 			]
 		}
 	},
