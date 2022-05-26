@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.13;
 
 import "./BlockJobsCoin.sol";
 
@@ -26,7 +26,7 @@ contract CareerContract {
       uint fnsDt; // 근무 종료일
       uint status; // 승인 처리 상태  (0-대기, 1-승인, 2-거절)
     }
-
+   
    uint public CareerTotalSupply = 1;
 
    mapping (uint => Career) public Career_mapping;
@@ -40,12 +40,12 @@ contract CareerContract {
     // 회원관리
     // Coin Approve;
     function approveUser(uint256 _amount) public payable {
-        BlockJobCoinAddress.CoinApprove(msg.sender, address(this), _amount * (10 ** BlockJobCoinAddress.decimals()));
+        BlockJobCoinAddress.CoinApprove(msg.sender, address(this), _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
     }
 
     // 결제 및 헤드헌팅 등에 사용... 따로 불변 데이터 저장이 필요 없어보여서 클라이언트에서 분리 후 공용 사용
     function transferFrom(address _to ,uint256 _amount) public payable{
-        BlockJobCoinAddress.transferFrom(msg.sender, _to, _amount * (10 ** BlockJobCoinAddress.decimals()));
+        BlockJobCoinAddress.transferFrom(msg.sender, _to, _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
 
         emit transferFrom_event(msg.sender, _to, _amount);
     }
@@ -74,11 +74,11 @@ contract CareerContract {
     // BJC -> ETH 스왑
     function sell(uint256 amount) payable public{
         // 최소 변환 단위보다 커야지 스왑 가능
-        require(amount > 10**5, "You need to sell at least some tokens");
+        require(amount * (10 ** 5) > 10**5, "You need to sell at least some tokens");
         // uint256 allowance = BlockJobCoinAddress.allowance(_owner, address(this));
         // require(allowance >= amount, "Check the token allowance");        
-        payable(msg.sender).transfer(amount / (10 ** 5));
-        BlockJobCoinAddress.transferFrom(msg.sender, address(this), amount);
+        payable(msg.sender).transfer(amount * (10 ** 5) / (10 ** 5));
+        BlockJobCoinAddress.transferFrom(msg.sender, address(this), amount * (10 ** 5));
         emit Sold(amount);
     }    
 
@@ -102,7 +102,7 @@ contract CareerContract {
        CareerByCompany_mapping[_company].push(CareerTotalSupply);
 
        // Transfer 관리자에게 먼저 지급;
-       BlockJobCoinAddress.transferFrom(msg.sender, _owner, _amount * (10 ** BlockJobCoinAddress.decimals()));
+       BlockJobCoinAddress.transferFrom(msg.sender, _owner, _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
 
        // emit Event
        emit createCareer_event(msg.sender, CareerTotalSupply);
@@ -125,11 +125,11 @@ contract CareerContract {
 
      // 경력 등록 거절 시에 근로자에게 30% 되돌려 줌
      if (_status == 2){
-       BlockJobCoinAddress.transferFrom(_owner, Career_mapping[_careerId].worker, (_amount * (10 ** BlockJobCoinAddress.decimals())) * 3/10);
+       BlockJobCoinAddress.transferFrom(_owner, Career_mapping[_careerId].worker, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 3/10);
      }
      // 승인 시에 근로자가 등록할 때 admin에게 지불한 값 80%는 기업에게 배분 (가스비가...?)
      else if(_status == 1){
-       BlockJobCoinAddress.transferFrom(_owner, msg.sender, (_amount * (10 ** BlockJobCoinAddress.decimals())) * 8/10);
+       BlockJobCoinAddress.transferFrom(_owner, msg.sender, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 8/10);
      }
 
      // emit Event

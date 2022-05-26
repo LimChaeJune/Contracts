@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.7+commit.e28d00a7"
+		"version": "0.8.14+commit.80d49f37"
 	},
 	"language": "Solidity",
 	"output": {
@@ -459,11 +459,11 @@
 			]
 		},
 		"BlockJobs/BlockJobsCoin.sol": {
-			"keccak256": "0xbb437874434766d7fcefeb13a9a3dbfba2e41a3975d2094b6c8d0962fe7821d6",
+			"keccak256": "0xd08cd3697a9411bdc22c4049385e73522dde915b4fb57c2a1abb3097e5c00c93",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a504b6ee2605d14812d5ed4f502d9103e2a71b08c7ea609aec62bfb94fc3af51",
-				"dweb:/ipfs/Qme4A8YYtGMvH9Gr4s9VF9jLCkjhi9YfxELSrac116sTGc"
+				"bzz-raw://3624c2261bc71346d07e3c2f731a1c69e627a5b6138abecfac7439fc8d222eab",
+				"dweb:/ipfs/QmUsn6X7SCMkNocBm7yy6sWyhPjDv9UTunp9Uz9YmDvXgF"
 			]
 		}
 	},
