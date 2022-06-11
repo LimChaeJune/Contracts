@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.7+commit.e28d00a7"
+		"version": "0.8.13+commit.abaa5c0e"
 	},
 	"language": "Solidity",
 	"output": {
@@ -541,11 +541,11 @@
 			]
 		},
 		"BlockJobs/BlockJobsNft.sol": {
-			"keccak256": "0xfb1ceea83e004a937c2583deec88e7411be1210f8a3770ee3a6e08aa3ecc9e5c",
+			"keccak256": "0x3855186db7ec1a0ca777c4fdd4984c5f4fd791c031a7a528233d3cb072af5370",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d394b0be1d238fa4c9ed164713a12d70408b2aff2ad6b7d9885d62331bad414d",
-				"dweb:/ipfs/QmSmJyhgQq4srvKmW6nMqT45xsJBsTAZjroK97jj1w5eXo"
+				"bzz-raw://f6f095e75e930ff61ac8b002b1da97fa27005885453d7c0962e1a7e1434de7ca",
+				"dweb:/ipfs/QmNwGiTZ8mSvKro8DjM5zuJ7tmrFX3c7NR44dCD2eFCDD1"
 			]
 		}
 	},

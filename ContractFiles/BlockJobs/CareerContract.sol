@@ -3,18 +3,20 @@
 pragma solidity ^0.8.13;
 
 import "./BlockJobsCoin.sol";
+import "./BlockJobsNft.sol";
 
 contract CareerContract {
-    address public _owner;
+    address public _deployAddress;
     BlockJobsCoin public BlockJobCoinAddress;    
-    BlockJobsNFT public BlockJobsNftAddress;
+    BlockJobsNft public BlockJobsNftAddress;
+
     event Bought(uint256 amount);
     event Sold(uint256 amount);
 
     constructor(address payable _tokenContractAddress, address payable _nftContractAddress) payable{
         BlockJobCoinAddress = BlockJobsCoin(_tokenContractAddress);
-        BlockJobsNFT = BlockJobsNFT(_nftContractAddress);
-        _owner = msg.sender;
+        BlockJobsNftAddress = BlockJobsNft(_nftContractAddress);
+        _deployAddress = msg.sender;
     }
 
     // 프로젝트 경력 구조체
@@ -36,7 +38,7 @@ contract CareerContract {
       string content; // 리뷰 내용
       address company; // 회사 지갑 주소
       address writer; // 작성자 지갑 주소
-      uint nftId; // nftid      
+      
       uint createDt; // 작성 일자
     }
    
@@ -47,11 +49,11 @@ contract CareerContract {
    mapping (address => uint[]) public CareerByWorker_mapping;
    mapping (address => uint[]) public CareerByCompany_mapping;
 
-   mapping (uint => Review_mapping) public Review_mapping;
+   mapping (uint => Review) public Review_mapping;
    mapping (address => uint[]) public ReviewByWriter_mapping;
    mapping (address => uint[]) public ReviewByCompany_mapping;
    
-   event createCareer_event(address writer);
+   event createCareer_event(address writer, uint careerId);
    event approveCareer_event(uint careerId);
    event transferFrom_event(address from, address to, uint amout);
  
@@ -60,6 +62,12 @@ contract CareerContract {
     function approveUser(uint256 _amount) public payable {
         BlockJobCoinAddress.CoinApprove(msg.sender, address(this), _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
     }
+
+    // NFT Approve;
+    function approveForNFT(address _tokenOwner) public payable {
+        BlockJobsNftAddress.approveForAll(_tokenOwner, address(this));
+    }
+
 
     // 결제 및 헤드헌팅 등에 사용... 따로 불변 데이터 저장이 필요 없어보여서 클라이언트에서 분리 후 공용 사용
     function transferFrom(address _to ,uint256 _amount) public payable{
@@ -117,7 +125,7 @@ contract CareerContract {
        CareerByCompany_mapping[_company].push(CareerTotalSupply);
 
        // Transfer 관리자에게 먼저 지급;
-       BlockJobCoinAddress.transferFrom(msg.sender, _owner, _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
+       BlockJobCoinAddress.transferFrom(msg.sender, _deployAddress, _amount * (10 ** uint256(BlockJobCoinAddress.decimals())));
 
        // emit Event
        emit createCareer_event(msg.sender, CareerTotalSupply);
@@ -140,11 +148,11 @@ contract CareerContract {
 
      // 경력 등록 거절 시에 근로자에게 30% 되돌려 줌
      if (_status == 2){
-       BlockJobCoinAddress.transferFrom(_owner, Career_mapping[_careerId].worker, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 3/10);
+       BlockJobCoinAddress.transferFrom(_deployAddress, Career_mapping[_careerId].worker, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 3/10);
      }
      // 승인 시에 근로자가 등록할 때 admin에게 지불한 값 80%는 기업에게 배분 (가스비가...?)
      else if(_status == 1){
-       BlockJobCoinAddress.transferFrom(_owner, msg.sender, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 8/10);
+       BlockJobCoinAddress.transferFrom(_deployAddress, msg.sender, (_amount * uint256(10 ** BlockJobCoinAddress.decimals())) * 8/10);
      }
 
      // emit Event
@@ -152,54 +160,79 @@ contract CareerContract {
    }
   
    // 회사 리뷰 작성
-   function createReview (string memory _title, string memory _content, string memory _nftUri, address _company) public payable {
+   function createReview (string memory _title, string memory _content, address _company, uint _amount) public payable {
         // @Exception
         // KOR = Letter/3bytes && ENG = Letter/1
         // 20글자 이상의 설명        
         require(bytes(_title).length > 9, "Title is too short"); 
-        require(bytes(_des).length > 20, "Description is too short");                            
+        require(bytes(_content).length > 20, "Description is too short");                            
 
         // 악의적으로 보상을 받는 것을 방지하기 위해
-        uint userReviewCount = reviewByWriter_mapping[msg.sender].length;
+        uint userReviewCount = ReviewByWriter_mapping[msg.sender].length;
 
         // 이미 리뷰를 작성한 유저는 재작성 불가
         for(uint i=0; i < userReviewCount; i++) {
-            if(reviewByWriter_mapping[msg.sender][i].company == company()){
+            uint idx = ReviewByWriter_mapping[msg.sender][i];
+            if(Review_mapping[idx].company == _company){
                 revert("Already Create Review");
             }
         }
-
         
-        Review_mapping[ReviewTotalSupply] = Review(ReviewTotalSupply, _title, _content, _company, msg.sender, _nftUri, 0, block.timestamp);
+        Review_mapping[ReviewTotalSupply] = Review(ReviewTotalSupply, _title, _content, _company, msg.sender, block.timestamp);
 
         // Create Mapping Data (Company)
-        reivewByCompany_mapping[_company].push(TotalSupply);
+        ReviewByCompany_mapping[_company].push(ReviewTotalSupply);
 
         // Create Mapping Data (Writer)
-        reviewByWriter_mapping[msg.sender].push(TotalSupply);
+        ReviewByWriter_mapping[msg.sender].push(ReviewTotalSupply);
 
         // Transfer (관리자가 지불 작성자에게 보상);
-        reviewCoinAddress.transferFrom(_admin, msg.sender, _amount);
+        BlockJobCoinAddress.transferFrom(_deployAddress, msg.sender, _amount);
                 
         // Review TotalSupply Up
         ReviewTotalSupply++;
    }
 
     // 리뷰 조회 (회사 기준)
-   function getCareerDetail(uint _careerId) public view returns (string memory, string[] memory, address, address, uint, uint, uint){
-       // @Exception
-       require(CareerTotalSupply > _careerId, "Not Matched careerId");
+    function getReviewByWriter(address _writer) public view returns(Review[] memory) {
+        // @Exception
+        // @Logic
+        Review[] memory result = new Review[](ReviewByWriter_mapping[_writer].length);
+        
+        // Review Mapping 순회
+        for (uint i=1; i < ReviewTotalSupply; i++){
+            // Review Stuct Writer 일치확인;
+            if(Review_mapping[i].writer == _writer){
+                // result Array에 값을 넣어야한다. 하지만 memory array에 push는 불가능. 이므로, result[idx] = Review Sturct 형식으로 삽입.
+                for(uint x=0; x < ReviewByWriter_mapping[_writer].length; x++) {
+                    if(result[x].id != ReviewByWriter_mapping[_writer][x]) {
+                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company,  Review_mapping[i].writer,  Review_mapping[i].createDt);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
-       return(Career_mapping[_careerId].description, Career_mapping[_careerId].roles, Career_mapping[_careerId].worker, Career_mapping[_careerId].company, Career_mapping[_careerId].stDt, Career_mapping[_careerId].fnsDt, Career_mapping[_careerId].status);
-   }
-
-   // 리뷰 조회 (작성자 기준)
-   function getCareerDetail(uint _careerId) public view returns (string memory, string[] memory, address, address, uint, uint, uint){
-       // @Exception
-       require(CareerTotalSupply > _careerId, "Not Matched careerId");
-
-       return(Career_mapping[_careerId].description, Career_mapping[_careerId].roles, Career_mapping[_careerId].worker, Career_mapping[_careerId].company, Career_mapping[_careerId].stDt, Career_mapping[_careerId].fnsDt, Career_mapping[_careerId].status);
-   }
+    function getReviewByCompany(address _company) public view returns(Review[] memory) {
+        // @Exception
+        // @Logic
+        Review[] memory result = new Review[](ReviewByCompany_mapping[_company].length);
+        
+        // Review Mapping 순회
+        for (uint i=1; i < ReviewTotalSupply; i++){
+            // Review Stuct Category 일치확인; (문자열비교);
+            if(Review_mapping[i].company == _company){
+                // result Array에 값을 넣어야한다. 하지만 memory array에 push는 불가능. 이므로, result[idx] = Review Sturct 형식으로 삽입.
+                for(uint x=0; x < ReviewByCompany_mapping[_company].length; x++) {
+                    if(result[x].id != ReviewByCompany_mapping[_company][x]) {
+                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company, Review_mapping[i].writer,   Review_mapping[i].createDt);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
    // 커리어 조회
    function getCareerDetail(uint _careerId) public view returns (string memory, string[] memory, address, address, uint, uint, uint){
@@ -251,20 +284,20 @@ contract CareerContract {
 
     // NFT 생성;
     function mintNft(address _owner, string memory _tokenURI, uint _reviewSupply) internal {
-        reviewNftAddress.minting(_owner, _tokenURI,_reviewSupply);
+        BlockJobsNftAddress.minting(_owner, _tokenURI, _reviewSupply);
     }
 
     // NFT 조회;
     function getNftOwnerOf(uint _nftId) public view returns(address){
-        return reviewNftAddress.ownerOf(_nftId);
+        return BlockJobsNftAddress.ownerOf(_nftId);
     }
 
     function getNftTokenUri(uint _nftId) public view returns(string memory){
-        return reviewNftAddress.tokenURI(_nftId);
+        return BlockJobsNftAddress.tokenURI(_nftId);
     }
 
     function getNftBalanceOf(address _owner) public view returns(uint){
-        return reviewNftAddress.balanceOf(_owner);
+        return BlockJobsNftAddress.balanceOf(_owner);
     }  
 
 }
