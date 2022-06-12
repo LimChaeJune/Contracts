@@ -38,8 +38,8 @@ contract CareerContract {
       string content; // 리뷰 내용
       address company; // 회사 지갑 주소
       address writer; // 작성자 지갑 주소
-      
       uint createDt; // 작성 일자
+      string nftUri; // nft 등록시 주소
     }
    
    uint public CareerTotalSupply = 1;
@@ -178,7 +178,7 @@ contract CareerContract {
             }
         }
         
-        Review_mapping[ReviewTotalSupply] = Review(ReviewTotalSupply, _title, _content, _company, msg.sender, block.timestamp);
+        Review_mapping[ReviewTotalSupply] = Review(ReviewTotalSupply, _title, _content, _company, msg.sender, block.timestamp, '');
 
         // Create Mapping Data (Company)
         ReviewByCompany_mapping[_company].push(ReviewTotalSupply);
@@ -206,7 +206,7 @@ contract CareerContract {
                 // result Array에 값을 넣어야한다. 하지만 memory array에 push는 불가능. 이므로, result[idx] = Review Sturct 형식으로 삽입.
                 for(uint x=0; x < ReviewByWriter_mapping[_writer].length; x++) {
                     if(result[x].id != ReviewByWriter_mapping[_writer][x]) {
-                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company,  Review_mapping[i].writer,  Review_mapping[i].createDt);
+                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company,  Review_mapping[i].writer,  Review_mapping[i].createDt, '');
                     }
                 }
             }
@@ -226,7 +226,7 @@ contract CareerContract {
                 // result Array에 값을 넣어야한다. 하지만 memory array에 push는 불가능. 이므로, result[idx] = Review Sturct 형식으로 삽입.
                 for(uint x=0; x < ReviewByCompany_mapping[_company].length; x++) {
                     if(result[x].id != ReviewByCompany_mapping[_company][x]) {
-                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company, Review_mapping[i].writer,   Review_mapping[i].createDt);
+                        result[x] = Review(Review_mapping[i].id, Review_mapping[i].title, Review_mapping[i].content, Review_mapping[i].company, Review_mapping[i].writer,   Review_mapping[i].createDt, '');
                     }
                 }
             }
@@ -263,7 +263,7 @@ contract CareerContract {
    }
 
    // 기업 기준으로 신청받은 커리어들 가져오기
-   function getCareerByComany(address _company) public view returns(Career[] memory) {
+   function getCareerByCompany(address _company) public view returns(Career[] memory) {
        // @Exception
        // @Logic    
        Career[] memory result = new Career[](CareerByCompany_mapping[_company].length);
@@ -283,19 +283,24 @@ contract CareerContract {
    }
 
     // NFT 생성;
-    function mintNft(address _owner, string memory _tokenURI, uint _reviewSupply) internal {
-        BlockJobsNftAddress.minting(_owner, _tokenURI, _reviewSupply);
+    function mintNft(address _owner, string memory _tokenURI, uint _reviewId) public {
+        require(Review_mapping[_reviewId].writer  == _owner, "Bad Reuqest owner address");   
+
+        BlockJobsNftAddress.minting(_owner, _tokenURI, _reviewId);
+        Review_mapping[_reviewId].nftUri = _tokenURI;
     }
 
-    // NFT 조회;
+    // NFT 보유자 주소;
     function getNftOwnerOf(uint _nftId) public view returns(address){
         return BlockJobsNftAddress.ownerOf(_nftId);
     }
 
+    // NFT URI 반환
     function getNftTokenUri(uint _nftId) public view returns(string memory){
         return BlockJobsNftAddress.tokenURI(_nftId);
     }
 
+    // NFT 보유 갯수 반환
     function getNftBalanceOf(address _owner) public view returns(uint){
         return BlockJobsNftAddress.balanceOf(_owner);
     }  

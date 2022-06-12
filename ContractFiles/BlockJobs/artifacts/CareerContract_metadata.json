@@ -379,6 +379,11 @@
 						"internalType": "uint256",
 						"name": "createDt",
 						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "nftUri",
+						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -520,7 +525,7 @@
 						"type": "address"
 					}
 				],
-				"name": "getCareerByComany",
+				"name": "getCareerByCompany",
 				"outputs": [
 					{
 						"components": [
@@ -781,6 +786,11 @@
 								"internalType": "uint256",
 								"name": "createDt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "nftUri",
+								"type": "string"
 							}
 						],
 						"internalType": "struct CareerContract.Review[]",
@@ -832,6 +842,11 @@
 								"internalType": "uint256",
 								"name": "createDt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "nftUri",
+								"type": "string"
 							}
 						],
 						"internalType": "struct CareerContract.Review[]",
@@ -840,6 +855,29 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_tokenURI",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_reviewId",
+						"type": "uint256"
+					}
+				],
+				"name": "mintNft",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -1022,11 +1060,11 @@
 			]
 		},
 		"BlockJobs/CareerContract.sol": {
-			"keccak256": "0x5fee09101310cb56ccc494d888e9d819cdd918c29a2f2dced0f9153b3fb8146d",
+			"keccak256": "0xf2ceefb334fd3b7462be6426b27809eab1bbcdf209fad3316c534313e3b5aa9c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e05218a744d51f14c0c9bf649615efcab785224a0857f825747535e87c486593",
-				"dweb:/ipfs/QmQMZnb9WNtqoqDwe8SQ4aKXHq3MsLPNprqtYB6XDmkDxC"
+				"bzz-raw://dc613dcc9d6bc45fc92260f9ae644e5685f3305070999131319a8faa2a4e2205",
+				"dweb:/ipfs/QmQqJx3JJK1m4FhiyXeey59aQ1F55FeCyAmZyFQY1NnWdE"
 			]
 		}
 	},
